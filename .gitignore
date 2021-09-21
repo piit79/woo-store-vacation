@@ -63,3 +63,7 @@ node_modules/
 *.log
 *.sql
 *.sqlite
+
+woo-store-vacation-*/
+woo-store-vacation-*.zip
+woo-store-vacation-*.tar.gz
