@@ -1,17 +1,21 @@
 {
-	"name": "mypreview/woo-store-vacation",
+	"name": "piit79/woo-store-vacation",
 	"type": "wordpress-plugin",
 	"description": "Pause your store temporarily with scheduling your vacation dates and displaying a user-friendly notice at the top of your shop page.",
 	"keywords": [
 		"WordPress",
 		"Plugin"
 	],
-	"homepage": "https://wordpress.org/plugins/woo-store-vacation",
+	"homepage": "https://github.com/piit79/woo-store-vacation",
 	"license": "GPL-3.0",
 	"authors": [
 		{
 			"name": "Mahdi Yazdani",
 			"homepage": "https://mahdiyazdani.com"
+		},
+		{
+			"name": "Petr Sedlacek",
+			"homepage": "https://github.com/piit79"
 		}
 	],
 	"require": {

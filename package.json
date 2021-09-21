@@ -2,8 +2,8 @@
 	"name": "woo-store-vacation",
 	"title": "Woo Store Vacation",
 	"description": "Pause your store temporarily with scheduling your vacation dates and displaying a user-friendly notice at the top of your shop page.",
-	"version": "1.4.1",
-	"author": "MyPreview",
+	"version": "1.4.1.42",
+	"author": "MyPreview, piit79",
 	"author_shop": "https://www.mypreview.one",
 	"author_uri": "https://mahdiyazdani.com",
 	"requires": "5.0",
@@ -12,10 +12,10 @@
 	"copyright": "© 2015 - 2021 MyPreview. All Rights Reserved.",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/mypreview/woo-store-vacation.git"
+		"url": "https://github.com/piit79/woo-store-vacation.git"
 	},
 	"bugs": {
-		"url": "https://github.com/mypreview/woo-store-vacation/issues"
+		"url": "https://github.com/piit79/woo-store-vacation/issues"
 	},
 	"scripts": {
 		"lint:js": "eslint assets/ --ext=js,jsx",

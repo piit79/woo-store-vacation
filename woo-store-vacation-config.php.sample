@@ -1,0 +1,10 @@
+<?php
+// Place this file into the main plugin directory (one level up from here) and rename it to
+// woo-store-vacation-config.php
+// Set the local configuration here
+//$local_config[ 'allow' ][ 'users' ] = array();       // User logins
+//$local_config[ 'allow' ][ 'categories' ] = array();  // Category ids
+//$local_config[ 'allow' ][ 'products' ] = array();    // Product ids
+//$local_config[ 'deny' ][ 'users' ] = array();
+//$local_config[ 'deny' ][ 'categories' ] = array();
+//$local_config[ 'deny' ][ 'products' ] = array();

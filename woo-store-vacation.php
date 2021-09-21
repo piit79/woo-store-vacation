@@ -12,17 +12,17 @@
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
  *
- * @link                    https://www.mypreview.one
+ * @link                    https://sedlacek.biz/
  * @since                   1.4.0
  * @package                 woo-store-vacation
  *
  * @wordpress-plugin
- * Plugin Name:             Woo Store Vacation
- * Plugin URI:              https://mypreview.github.io/woo-store-vacation
+ * Plugin Name:             Woo Store Vacation+
+ * Plugin URI:              https://github.com/piit79/woo-store-vacation
  * Description:             Pause your store temporarily with scheduling your vacation dates and displaying a user-friendly notice at the top of your shop page.
- * Version:                 1.4.1
- * Author:                  MyPreview
- * Author URI:              https://mahdiyazdani.com
+ * Version:                 1.4.1.42
+ * Author:                  piit79
+ * Author URI:              https://sedlacek.biz/
  * License:                 GPL-3.0
  * Requires at least:       WordPress 5.0
  * Requires PHP:            7.2.0
@@ -31,6 +31,8 @@
  * Domain Path:             /languages
  * WC requires at least:    3.4.0
  * WC tested up to:         5.1
+ * GitHub Plugin URI:       https://github.com/piit79/woo-store-vacation
+ * Release Asset:           true
  */
 
 // If this file is called directly, abort.
@@ -64,6 +66,31 @@ define( 'WOO_STORE_VACATION_BASENAME', basename( WOO_STORE_VACATION_FILE ) );
 define( 'WOO_STORE_VACATION_PLUGIN_BASENAME', plugin_basename( WOO_STORE_VACATION_FILE ) );
 define( 'WOO_STORE_VACATION_DIR_URL', plugin_dir_url( WOO_STORE_VACATION_FILE ) );
 define( 'WOO_STORE_VACATION_DIR_PATH', plugin_dir_path( WOO_STORE_VACATION_FILE ) );
+
+const WILDCARD_ALL = '*';
+// Default local config
+$local_config = array(
+	'allow' => array(
+		'users' => array(),
+		'categories' => array(),
+		'products' => array(),
+	),
+	'deny' => array(
+		'users' => array(),
+		'categories' => array(),
+		'products' => array(),
+	),
+);
+
+// Load local config
+$local_config_file = __DIR__ . '/../woo-store-vacation-config.php';
+if ( is_file( $local_config_file ) ) {
+	include_once $local_config_file;
+}
+
+add_filter( 'gu_override_dot_org', function( $overrides ) {
+	return array_merge( $overrides, [ 'woo-store-vacation/woo-store-vacation.php' ] );
+});
 
 if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 
@@ -158,6 +185,9 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 		 * @return  void
 		 */
 		public function admin_notices() {
+			// No notices, thanks
+			return;
+
 			// Query WooCommerce activation.
 			if ( ! $this->_is_woocommerce() ) {
 				/* translators: 1: Dashicon, 2: Open anchor tag, 3: Close anchor tag. */
@@ -745,6 +775,62 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 			}
 		}
 
+		public function purchasing_disabled( $product=NULL ) {
+			global $wp_query, $local_config;
+
+			// User
+			$user = wp_get_current_user();
+			if ( $user ) {
+				foreach ( array( 'deny', 'allow' ) as $mode ) {
+					if ( in_array($user->user_login, $local_config[ $mode ][ 'users' ] ) ) {
+						// Disallowed/allowed user
+						return $mode == 'deny';
+					}
+				}
+			}
+
+			// Product
+			if ( ! $product ) {
+				$product = wc_get_product();
+			}
+
+			if ( $product ) {
+				foreach ( array( 'deny', 'allow' ) as $mode ) {
+					if ( in_array( $product->get_id(), $local_config[ $mode ]['products'] ) ) {
+						// Disabled/allowed product
+						return $mode == 'deny';
+					}
+				}
+			}
+
+			// Categories
+			$obj = $wp_query ? $wp_query->get_queried_object() : null;
+			$category = $obj && $obj->taxonomy == 'product_cat' ? $obj : null;
+			$category_ids = $product ? $product->get_category_ids() : null;
+
+			foreach ( array( 'deny', 'allow' ) as $mode ) {
+				if (
+					( ( $category || $category_ids) && in_array( WILDCARD_ALL, $local_config[ $mode ][ 'categories' ] ) ) ||
+					( $category && in_array( $category->term_id, $local_config[ $mode ][ 'categories'] ) ) ||
+					( $category_ids && array_intersect( $category_ids, $local_config[ $mode ][ 'categories' ] ) )
+				) {
+					// All categories, or a specific category, or a product from a specific category
+					return $mode == 'deny';
+				}
+			}
+
+			// Defaults to purchasing disabled
+			return true;
+		}
+
+		public function is_purchasable( $purchasable, $product=NULL ) {
+			if ( $this->purchasing_disabled( $product ) ) {
+				return false;
+			}
+
+			return $purchasable;
+		}
+
 		/**
 		 * Determine whether the shop should be closed or not!
 		 *
@@ -779,8 +865,8 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 
 				if ( $today_timestamp >= $start_date_timestamp && $today_timestamp <= $end_date_timestamp ) {
 					if ( isset( $disable_purchase ) && wc_string_to_bool( $disable_purchase ) ) {
-						// Make all products unpurchasable.
-						add_filter( 'woocommerce_is_purchasable', '__return_false', PHP_INT_MAX );
+						// Make products unpurchasable.
+						add_filter( 'woocommerce_is_purchasable', array( $this, 'is_purchasable' ), PHP_INT_MAX, 2 );
 					}
 
 					add_action( 'woocommerce_before_shop_loop', array( $this, 'vacation_notice' ), 5 );
@@ -803,6 +889,10 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 			$btn_txt     = isset( $get_options['btn_txt'] ) ? $get_options['btn_txt'] : null;
 			$btn_url     = isset( $get_options['btn_url'] ) ? $get_options['btn_url'] : null;
 			$notice      = isset( $get_options['vacation_notice'] ) ? $get_options['vacation_notice'] : null;
+
+			if ( ! $this->purchasing_disabled() ) {
+				return;
+			}
 
 			if ( isset( $notice ) && ! empty( $notice ) ) :
 				printf( '<div id="%s">', esc_attr( WOO_STORE_VACATION_SLUG ) );
@@ -827,6 +917,10 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 		public function inline_css() {
 			// Bailout, if any of the pages below are not displaying at the moment.
 			if ( ! is_cart() && ! is_checkout() && ! is_product() && ! is_woocommerce() ) {
+				return;
+			}
+
+			if ( ! $this->purchasing_disabled() ) {
 				return;
 			}
 
@@ -875,6 +969,12 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 					border-radius:0;
 					box-shadow:none!important;
 					text-decoration:none;
+				}
+				div.quantity,
+				.single_add_to_cart_button,
+				.wcppec-checkout-buttons,
+				.wc-stripe-product-checkout-container {
+					display: none!important;
 				}',
 				esc_attr( WOO_STORE_VACATION_SLUG ),
 				sanitize_hex_color( $background_color ),
