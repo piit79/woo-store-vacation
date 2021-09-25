@@ -13,24 +13,24 @@
  * any later version.
  *
  * @link                    https://sedlacek.biz/
- * @since                   1.4.0
+ * @since                   1.4.3
  * @package                 woo-store-vacation
  *
  * @wordpress-plugin
  * Plugin Name:             Woo Store Vacation+
  * Plugin URI:              https://github.com/piit79/woo-store-vacation
  * Description:             Pause your store temporarily with scheduling your vacation dates and displaying a user-friendly notice at the top of your shop page.
- * Version:                 1.4.1.42
+ * Version:                 1.4.3.42
  * Author:                  piit79
  * Author URI:              https://sedlacek.biz/
  * License:                 GPL-3.0
- * Requires at least:       WordPress 5.0
+ * Requires at least:       5.0
  * Requires PHP:            7.2.0
  * License URI:             http://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:             woo-store-vacation
  * Domain Path:             /languages
  * WC requires at least:    3.4.0
- * WC tested up to:         5.1
+ * WC tested up to:         5.5
  * GitHub Plugin URI:       https://github.com/piit79/woo-store-vacation
  * Release Asset:           true
  */
@@ -894,7 +894,7 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 		 * Print inline stylesheet before closing </head> tag.
 		 * Specific to `Store vacation` notice message.
 		 *
-		 * @since   1.3.8
+		 * @since   1.4.3
 		 * @return  void
 		 */
 		public function inline_css() {
@@ -916,7 +916,7 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 					background-color:%2$s !important;
 					color:%3$s !important;
 					z-index:2;
-					height:100%;
+					height:100%%;
 					text-align:left;
 					list-style:none;
 					border-top:0;

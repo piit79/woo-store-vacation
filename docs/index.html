@@ -68,8 +68,11 @@
 					<span class="sr-only">MyPreview</span>
   				</a>
 				<ul class="nav line-list none-list">
-	                <li class="line-list__item">
-	                  <a href="CHANGELOG.txt" data-fancybox data-type="iframe" data-src="CHANGELOG.txt" class="nav__link">Changelog <span class="bdg">v1.2.6</span></a>
+					<li class="line-list__item">
+	                  <a href="./docs" class="nav__link">Docs</a>
+	                </li>
+	                <li class="line-list__item hide-on-mobile">
+	                  <a href="CHANGELOG.txt" data-fancybox data-type="iframe" data-src="CHANGELOG.txt" class="nav__link">Changelog <span class="bdg">v1.2.7</span></a>
 	                </li>
 	                <li class="line-list__item">
 	                  <a href="#pricing" class="btn btn--success btn--md">Purchase Now</a>
@@ -241,7 +244,7 @@
 			<p class="review-verify bold">Users rate Woo Store Vacation <a href="https://wordpress.org/support/plugin/woo-store-vacation/reviews/?filter=5" target="_blank" rel="noopener noreferrer nofollow"><img width="149" alt="Woo Store Vacation Plugin Rating" src="https://img.shields.io/wordpress/plugin/stars/woo-store-vacation?color=%2371b02f&label=%20&logo=wordpress&style=social" /></a> based on <span class="purple-color">verified reviews</span></p>
 		</div>
 	</section>
-	<section class="col-full max-w-915 pd-t-60">
+	<section class="col-full max-w-915 pd-t-60" id="faq">
 		<h2 class="title txt-center">Frequently Asked Questions</h2>
 		<p class="lead txt-center">Let us help answer the most common questions you might have</p>
 		<ul class="pd-t-30 none-list cols cols--pd-v-24 cols--pd-h-24">
@@ -321,6 +324,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/tabslet@1.7.3/jquery.tabslet.min.js"></script>
 	<script src="https://cdn.paddle.com/paddle/paddle.js"></script>
-	<script>Paddle.Setup({vendor:15981,completeDetails:!0}),Paddle.Product.Prices(580975,function(e){jQuery("#item-price").html(e.price.gross.replace(/(\d+\.\d{1,2})/gi,"<span>$1</span>"))});</script>
+	<script>Paddle.Setup({ vendor: 15981, completeDetails: !0 }), Paddle.Product.Prices(580975, function ({ price: e }) { var s = jQuery("#item-price"), a = e.gross; a.length > 8 && s.closest(".cols").addClass("max-w-845").removeClass("max-w-590"), jQuery("#item-price").html(a.replace(/(\d+\.\d{1,2})/gi, "<span>$1</span>")) });</script>
   </body>
 </html>
