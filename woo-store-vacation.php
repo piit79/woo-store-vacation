@@ -197,12 +197,6 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 				if ( $welcome_notice ) {
 					printf( '<div class="notice notice-info"><p>%s</p></div>', wp_kses_post( $welcome_notice ) );
 					delete_transient( $welcome_notice_transient );
-				} else {
-					if ( ! get_transient( 'woo_store_vacation_upsell' ) ) {
-						/* translators: 1: Dashicon, 2: HTML symbol, 3: Open anchor tag, 4: Close anchor tag. */
-						$message = sprintf( esc_html_x( '%1$s Automate your closings by defining unlimited number of vacation dates, times (hours), and weekdays without any manual effort needed. %2$s %3$sUpgrade to PRO%4$s', 'admin notice', 'woo-store-vacation' ), '<i class="dashicons dashicons-calendar-alt" style="vertical-align:sub"></i>', '&#8594;', sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer nofollow"><button class="button-primary">', esc_url( WOO_STORE_VACATION_URI ) ), '</button></a>' );
-						printf( '<div id="%s-dismiss-upsell" class="notice notice-info woocommerce-message notice-alt is-dismissible"><p>%s</p></div>', esc_attr( WOO_STORE_VACATION_SLUG ), wp_kses_post( $message ) );
-					}
 				}
 			}
 		}
@@ -326,13 +320,6 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 												?>
 											</li>
 										</ul>
-										<br/>
-										<p align="center">
-										<?php
-											/* translators: 1: Open anchor tag, 2: Close anchor tag. */
-											printf( esc_html_x( '%1$sUpgrade to PRO &#8594;%2$s', 'upsell', 'woo-store-vacation' ), sprintf( '<a href="%s" class="button-primary button-link-delete" target="_blank" rel="noopener noreferrer nofollow" style="width:100%%">', esc_url( WOO_STORE_VACATION_URI ) ), '</a>' );
-										?>
-										</p>
 									</div>
 								</div>
 								<div class="postbox">
@@ -994,8 +981,6 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 			$plugin_links = array();
 
 			if ( strpos( $plugin_file_name, WOO_STORE_VACATION_BASENAME ) ) {
-				/* translators: 1: Open anchor tag, 2: Close anchor tag. */
-				$plugin_links[] = sprintf( _x( '%1$sUpgrade to PRO%2$s', 'plugin link', 'woo-store-vacation' ), sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer nofollow" class="button-link-delete"><span class="dashicons dashicons-cart" style="font-size:16px;vertical-align:middle;"></span> ', esc_url( WOO_STORE_VACATION_URI ) ), '</a>' );
 			}
 
 			return array_merge( $links, $plugin_links );
@@ -1011,10 +996,6 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 		 */
 		public function action_links( $links ) {
 			$plugin_links = array();
-			/* translators: 1: Open anchor tag, 2: Close anchor tag. */
-			$plugin_links[] = sprintf( _x( '%1$sHire Me!%2$s', 'plugin link', 'woo-store-vacation' ), sprintf( '<a href="%s" class="button-link-delete" target="_blank" rel="noopener noreferrer nofollow" title="%s">', esc_attr( WOO_STORE_VACATION_AUTHOR_URI ), esc_attr_x( 'Looking for help? Hire Me!', 'upsell', 'woo-store-vacation' ) ), '</a>' );
-			/* translators: 1: Open anchor tag, 2: Close anchor tag. */
-			$plugin_links[] = sprintf( _x( '%1$sSupport%2$s', 'plugin link', 'woo-store-vacation' ), sprintf( '<a href="https://wordpress.org/support/plugin/%s" target="_blank" rel="noopener noreferrer nofollow">', esc_attr( WOO_STORE_VACATION_SLUG ) ), '</a>' );
 
 			if ( $this->_is_woocommerce() ) {
 				$settings_url = add_query_arg( 'page', WOO_STORE_VACATION_SLUG, admin_url( 'admin.php' ) );
