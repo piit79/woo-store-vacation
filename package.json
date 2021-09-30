@@ -1,52 +1,38 @@
 {
-	"name": "woo-store-vacation",
-	"title": "Woo Store Vacation",
+	"name": "@piit79/woo-store-vacation",
+	"version": "1.4.3.42",
+	"private": true,
 	"description": "Pause your store temporarily with scheduling your vacation dates and displaying a user-friendly notice at the top of your shop page.",
-	"version": "1.4.1.42",
-	"author": "MyPreview, piit79",
 	"author_shop": "https://www.mypreview.one",
 	"author_uri": "https://mahdiyazdani.com",
 	"requires": "5.0",
 	"tested_up_to": "5.5",
-	"license": "GPL-3.0",
 	"copyright": "© 2015 - 2021 MyPreview. All Rights Reserved.",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/piit79/woo-store-vacation.git"
-	},
+	"homepage": "https://github.com/piit79/woo-store-vacation#readme",
 	"bugs": {
 		"url": "https://github.com/piit79/woo-store-vacation/issues"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/piit79/woo-store-vacation.git"
+	},
+	"license": "GPL-3.0-or-later",
+	"author": "MyPreview, piit79",
 	"scripts": {
-		"lint:js": "eslint assets/ --ext=js,jsx",
-		"lint:js-fix": "eslint assets/ --ext=js,jsx --fix",
+		"lint:js": "eslint assets --ext=js,jsx,json,ts,tsx",
+		"lint:js-fix": "eslint assets --ext=js,jsx,json,ts,tsx --fix",
+		"format": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\"",
+		"lint:php": "composer lint:php",
 		"lint:wpcs": "composer lint:wpcs",
 		"lint:wpcs-fix": "composer lint:wpcbf",
-		"lint:php": "composer lint:php",
-		"makepot": "composer make-pot",
-		"reformat-files": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\""
+		"makepot": "composer make-pot"
 	},
 	"devDependencies": {
-		"@babel/core": "7.13.10",
-		"@wordpress/babel-preset-default": "5.0.1",
-		"@wordpress/browserslist-config": "^3.0.1",
-		"@wordpress/eslint-plugin": "^8.0.2",
-		"@wordpress/i18n": "3.14.0",
-		"babel-core": "7.0.0-bridge.0",
-		"babel-eslint": "10.1.0",
-		"cross-env": "7.0.3",
-		"eslint": "7.21.0",
-		"eslint-config-prettier": "8.1.0",
-		"prettier": "npm:wp-prettier@2.2.1-beta-1"
-	},
-	"browserslist": [
-		"extends @wordpress/browserslist-config"
-	],
-	"engines": {
-		"node": ">=10.10.0",
-		"npm": ">=6.4.0"
-	},
-	"eslintConfig": {
-		"extends": "wordpress"
+		"@babel/core": "^7.9.0",
+		"@wordpress/eslint-plugin": "^9.0.6",
+		"@wordpress/prettier-config": "^1.1.0",
+		"lint-staged": "^11.0.1",
+		"prettier": "npm:wp-prettier@^2.2.1-beta-1",
+		"wp-prettier": "^2.2.1-beta-1"
 	}
 }
