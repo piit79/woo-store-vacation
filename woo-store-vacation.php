@@ -782,6 +782,10 @@ if ( ! class_exists( 'Woo_Store_Vacation' ) ) :
 			}
 
 			if ( $product ) {
+				if ( $parent_id = $product->get_parent_id() ) {
+					// This is a product variation - decide based on the parent product
+					$product = wc_get_product( $parent_id );
+				}
 				foreach ( array( 'deny', 'allow' ) as $mode ) {
 					if ( in_array( $product->get_id(), $local_config[ $mode ]['products'] ) ) {
 						// Disabled/allowed product
